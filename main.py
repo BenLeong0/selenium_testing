@@ -473,14 +473,17 @@ def results_page(driver: webdriver.Chrome):
     # Get prices
     quotes: WebElement = driver.find_element(By.CLASS_NAME, "_1fZCO2opVDhd5gTHBgqf8y")
     cards: List[WebElement] = quotes.find_elements(By.CLASS_NAME, "Card")
-    for card in cards:
-        pounds = card.find_element(By.CLASS_NAME, "_1iLOZyp3tWfBXAl1TUwuOB").text
-        pennies = card.find_element(By.CLASS_NAME, "_1cagmbrfcpQJ55dkTgABS").text
+    with open("latest_prices.csv", "w") as f:
+        for card in cards:
+            pounds = card.find_element(By.CLASS_NAME, "_1iLOZyp3tWfBXAl1TUwuOB").text
+            pennies = card.find_element(By.CLASS_NAME, "_1cagmbrfcpQJ55dkTgABS").text
 
-        provider_image: WebElement = card.find_element(By.CLASS_NAME, "BrandLogo__image")
-        provider_name = provider_image.get_property("alt")
+            provider_image: WebElement = card.find_element(By.CLASS_NAME, "BrandLogo__image")
+            provider_name = provider_image.get_property("alt")
 
-        print(pounds + pennies, "-", provider_name)
+            print(pounds + pennies, "-", provider_name)
+            f.write(pounds+pennies + "\t" + provider_name + "\n")
+
 
 
 
